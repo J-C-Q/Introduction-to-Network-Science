@@ -1,4 +1,4 @@
-using GLMakie, GraphMakie, Graphs
+using GLMakie, GraphMakie, Graphs # packages
 
 function visualize_BFS(N,M,root)
   fig = Figure() # create a Figure
@@ -21,22 +21,22 @@ function visualize_BFS(N,M,root)
   rowgap = 10,
   orientation = :horizontal,
   tellwidth = false)
-  ##########################################################################
+  #####################################################################################
 
   node_colors = Node(pushfirst!(fill(:black,N-1),:green)) # initialize the observable that holds the colors of the nodes
   queue_text = Node("queue=[$root]") # initialize the observable that holds the string representing the values of the queue array
   visited_text = Node("visited=[]") # initialize the observable that holds the string representing the values of the visited array
 
-  # plot the queue and visited arrays ######################################
+  # plot the queue and visited arrays #################################################
   text!(qv_ax,queue_text,position = (0, .5), align = (:center, :center))
   text!(qv_ax,visited_text,position = (0, -.5), align = (:center, :center))
   ylims!(qv_ax,-1,1)
-  ##########################################################################
+  #####################################################################################
 
   g = SimpleGraph(N,M) # create a random undirected graph with N nodes and M edges (you can also set this to a specific graph)
   shortest_path_tree = Node(SimpleGraph(nv(g),0)) # create an ovservalbe that holds an undirected graph with N nodes and 0 edges
 
-  # plot the graph and the shortest path tree into their axis ##############
+  # plot the graph and the shortest path tree into their axis #########################
   p = graphplot!(graph_ax,g,
   node_size = [30 for i in 1:nv(g)],
   nlabels_align=(:center, :center),
@@ -53,14 +53,12 @@ function visualize_BFS(N,M,root)
   )
   p2[:node_pos][] = p[:node_pos][] # make both graphs have the same layout
   autolimits!(spt_ax)
-  ##########################################################################
-
+  #####################################################################################
 
   display(fig) # display the figure in a seperate window
-
   sleep(1) # wait before starting the algorithm
 
-  # Breadth-first search algorithm ########################################
+  # Breadth-first search algorithm ####################################################
   begin
     queue = Int64[root] 
     visited = Int64[root] 
@@ -70,19 +68,19 @@ function visualize_BFS(N,M,root)
           push!(queue,i)
           push!(visited,i)
 
-          # add edge to the shortest path tree #########
+          # add edge to the shortest path tree #########################
           t = shortest_path_tree[]
           add_edge!(t,queue[1],i)
           shortest_path_tree[] = t
           p2[:node_pos][] = p[:node_pos][]
           autolimits!(spt_ax)
-          ##############################################
+          ##############################################################
 
-          # color visited node blue ####################
+          # color visited node blue ####################################
           c = node_colors[]
           c[i]=:blue
           node_colors[] = c
-          ##############################################
+          ##############################################################
 
           queue_text[]="queue="*string(queue) # update the queue array plot
           visited_text[]="visited="*string(visited) # update the visited array plot
@@ -90,13 +88,13 @@ function visualize_BFS(N,M,root)
         end
       end
 
-      # color node red when all neighbors visited ########
+      # color node red when all neighbors visited ######################
       if queue[1] != root
         c = node_colors[]
         c[queue[1]]=:darkred 
         node_colors[] = c
       end
-      ####################################################
+      ##################################################################
 
       popfirst!(queue)
       if length(queue) != 0
@@ -106,7 +104,9 @@ function visualize_BFS(N,M,root)
     end
     queue_text[]="queue=[]" # update the queue array plot
   end
-  ##########################################################################
+  #####################################################################################
+
+
   return
 end
 
