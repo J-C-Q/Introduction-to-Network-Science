@@ -1,5 +1,4 @@
-using GLMakie, GraphMakie, Graphs, NetworkLayout
-
+using GLMakie, GraphMakie, Graphs
 
 function visualize_BFS(N,M,root)
   fig = Figure() # create a Figure
@@ -89,7 +88,6 @@ function visualize_BFS(N,M,root)
           visited_text[]="visited="*string(visited) # update the visited array plot
           sleep(0.4) # wait for human comprehension
         end
-
       end
 
       # color node red when all neighbors visited ########
